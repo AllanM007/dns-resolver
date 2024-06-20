@@ -1,10 +1,11 @@
 package main
 
-type Mapper struct {
-	Domain string
-	IPV4   string
-	IPV6   string
-}
+import (
+	"bytes"
+	"encoding/binary"
+)
+
+const RECURSION_FLAG uint16 = 1 << 8
 
 type Header struct {
 	Id      uint16
@@ -15,10 +16,26 @@ type Header struct {
 	ArCount uint16
 }
 
-func GetDomain(ip string) (string, error) {
-	return "", nil
+type Mapper struct {
+	Domain string
+	IPV4   string
+	IPV6   string
 }
 
-func GetIp(domain string) (string, error) {
-	return "", nil
+type Question struct {
+	QName  string //e.g 3dns6google3com
+	QType  string //e.g A,MX
+	QClass string //e.g internet
+}
+
+func (h *Header) ToBytes() []byte {
+	encodedHeader := new(bytes.Buffer)
+	binary.Write(encodedHeader, binary.BigEndian, h.Id)
+	binary.Write(encodedHeader, binary.BigEndian, h.Flags)
+	binary.Write(encodedHeader, binary.BigEndian, h.QdCount)
+	binary.Write(encodedHeader, binary.BigEndian, h.AnCount)
+	binary.Write(encodedHeader, binary.BigEndian, h.NsCount)
+	binary.Write(encodedHeader, binary.BigEndian, h.ArCount)
+
+	return encodedHeader.Bytes()
 }
