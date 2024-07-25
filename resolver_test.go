@@ -27,10 +27,15 @@ t.Run("Should encode a question into bytes", func(t *testing.T) {
 })
 }
 
+func TestEncodeDNSName(t *testing.T)  {
+	
 t.Run("Should encode the dns name", func(t *testing.T) {
 	encodedDnsName := encodeDnsName([]byte("dns.google.com"))
 	assert.Equal(t, []byte("\x03dns\x06google\x03com\x00"), encodedDnsName)
 })
+}
+
+func TestCreateQuery(t *testing.T)  {
 
 t.Run("Should create a query", func(t *testing.T) {
 	header := NewHeader(22, RECURSION_FLAG, 1, 0, 0, 0)
@@ -42,6 +47,7 @@ t.Run("Should create a query", func(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, expected, query)
 })
+}
 
 t.Run("Should check if the response starts with the same ID as the query", func(t *testing.T) {
 	query, _ := hex.DecodeString("00160100000100000000000003646e7306676f6f676c6503636f6d0000010001")
