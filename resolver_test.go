@@ -1,5 +1,8 @@
 package main
 
+import "testing"
+
+func TestEncodeHeaderToBytes(t *testing.T)  {
 t.Run("Should encode an header into bytes", func(t *testing.T) {
 	header := NewHeader(22, RECURSION_FLAG, 1, 0, 0, 0)
 
@@ -10,6 +13,9 @@ t.Run("Should encode an header into bytes", func(t *testing.T) {
 	assert.Equal(t, expected, encodedHeader)
 })
 
+}
+
+func TestEncodeQuestionTobytes(t *testing.T)  {
 t.Run("Should encode a question into bytes", func(t *testing.T) {
 	question := NewQuestion("dns.google.com", TYPE_A, CLASS_IN)
 
@@ -19,6 +25,7 @@ t.Run("Should encode a question into bytes", func(t *testing.T) {
 	assert.NotNil(t, expected)
 	assert.Equal(t, expected, encodedQuestion)
 })
+}
 
 t.Run("Should encode the dns name", func(t *testing.T) {
 	encodedDnsName := encodeDnsName([]byte("dns.google.com"))
